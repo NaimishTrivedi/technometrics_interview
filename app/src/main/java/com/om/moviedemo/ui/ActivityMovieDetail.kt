@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,7 +23,10 @@ import com.om.moviedemo.adapter.SeatSelectionAdapter
 import com.om.moviedemo.api.APIClient
 import com.om.moviedemo.api.APIConstant
 import com.om.moviedemo.api.responsemodel.ResponseMovieDetailModel
+import com.om.moviedemo.database.cartdatabase.CartDatabase
+import com.om.moviedemo.database.entity.CartModel
 import com.om.moviedemo.databinding.ActivityMovieDetailBinding
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +38,8 @@ class ActivityMovieDetail : AppCompatActivity() {
     }
     private lateinit var binding: ActivityMovieDetailBinding
     private var movieId:String? = "";
+    private var movieTitle:String? = "";
+    private val cartDatabase by lazy { CartDatabase(this).getCartDao() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieDetailBinding.inflate(layoutInflater)
@@ -43,7 +51,8 @@ class ActivityMovieDetail : AppCompatActivity() {
         }
 
         movieId = intent.getStringExtra(MOVIE_ID)
-        binding.mTxtToolbarTitle.text = intent.getStringExtra(MOVIE_TITLE)
+        movieTitle = intent.getStringExtra(MOVIE_TITLE)
+        binding.mTxtToolbarTitle.text = movieTitle!!
 
         binding.mIvBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -53,6 +62,8 @@ class ActivityMovieDetail : AppCompatActivity() {
             showSeatSelectionDialog()
         }
         getMovieDetails()
+
+        checkAlreadyAddedInCart()
     }
 
     fun getMovieDetails(){
@@ -128,20 +139,42 @@ class ActivityMovieDetail : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.dialog_seat_selection, null)
         dialog.setContentView(view)
 
-        var mTxtTotalPrice = view.findViewById<TextView>(R.id.mTxtTotalPrice)
+        val mTxtTotalPrice = view.findViewById<TextView>(R.id.mTxtTotalPrice)
         mTxtTotalPrice.setText(getString(R.string.lblrupeesymbol)+" 100.00") // default first selection
+        var cartModel = CartModel(movieId!!,movieTitle!!,1) //Default cart model prepare
 
-        var mRvSeatSelectionList = view.findViewById<RecyclerView>(R.id.mRvSeatSelectionList)
+        val mRvSeatSelectionList = view.findViewById<RecyclerView>(R.id.mRvSeatSelectionList)
         mRvSeatSelectionList.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        var seatSelectionAdapter = SeatSelectionAdapter()
+        val seatSelectionAdapter = SeatSelectionAdapter()
         seatSelectionAdapter.setOnSeatSelectionListener(object : SeatSelectionAdapter.OnSeatSelectionListener{
             override fun onSeatSelection(count: Int) {
                 mTxtTotalPrice.setText(getString(R.string.lblrupeesymbol)+" "+(count * 100.00))
+                cartModel.seats = count
             }
 
         })
         mRvSeatSelectionList.adapter = seatSelectionAdapter
 
+       view.findViewById<Button>(R.id.mBtnAddCart).setOnClickListener {
+            lifecycleScope.launch {
+                cartDatabase.addCart(cartModel)
+                Toast.makeText(this@ActivityMovieDetail,"Added Successfully!",Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                checkAlreadyAddedInCart();
+            }
+       }
         dialog.show()
+    }
+
+    fun checkAlreadyAddedInCart(){
+        lifecycleScope.launch {
+            if(cartDatabase.isAlreadyInCart(movieId!!)){
+                binding.mBtnBookTicktes.backgroundTintList = ContextCompat.getColorStateList(this@ActivityMovieDetail,R.color.ligth_grey)
+                binding.mBtnBookTicktes.isEnabled = false
+            }else{
+                binding.mBtnBookTicktes.backgroundTintList = ContextCompat.getColorStateList(this@ActivityMovieDetail,R.color.orange)
+                binding.mBtnBookTicktes.isEnabled = true
+            }
+        }
     }
 }
