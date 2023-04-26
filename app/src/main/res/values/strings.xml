@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MovieDemo</string>
+
+    <string name="lblsplash">Ultimate\nDestination\nFor\nCinematic\nAdventures!</string>
+    <string name="lblgetstarted">Let\'s Get Started</string>
+    <string name="lblnowplaying">Now Playing</string>
+    <string name="lblbooktickets">Book tickets</string>
+    <string name="strDot">&#8226;</string>
+</resources>

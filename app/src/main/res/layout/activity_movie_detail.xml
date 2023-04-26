@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ActivityMovieDetail"
+    android:background="@color/white">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/mToolBarView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:contentInsetStart="0dp"
+        android:background="@color/black">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mIvBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_back"
+                app:tint="@color/white"
+                android:padding="10dp"/>
+            <TextView
+                android:id="@+id/mTxtToolbarTitle"
+                android:layout_toEndOf="@+id/mIvBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                tools:text="Movie Title"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <ProgressBar
+        android:id="@+id/mProgressBarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <RelativeLayout
+        android:id="@+id/mRelDetailContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mToolBarView"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/mIvMoviePoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    tools:src="@drawable/movie_place_holder"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearance="@style/roundedPosterStyle"/>
+
+
+                <LinearLayout
+                    android:id="@+id/mLinearVoteLayout"
+                    android:layout_below="@+id/mIvMoviePoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/mTxtVoteAverage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="7.6"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:drawableStart="@drawable/star"
+                        android:gravity="center"
+                        android:drawablePadding="5dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/mTxtVoteCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="100 votes"
+                        android:textColor="@color/black_transparent_70"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/mHSVLanguage"
+                    android:layout_below="@+id/mLinearVoteLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <LinearLayout
+                        android:id="@+id/mLinearLanguageContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/mTxtSubTitle"
+                    android:layout_below="@+id/mHSVLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="&#8226;Advanture"
+                    android:textSize="12sp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_transparent_70"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:id="@+id/mTxtDescription"
+                    android:layout_below="@+id/mTxtSubTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Description"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"/>
+
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mFooterView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="10dp"
+            android:layout_alignParentBottom="true"
+            app:cardBackgroundColor="@color/white">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mBtnBookTicktes"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/orange"
+                android:text="@string/lblbooktickets"
+                android:textSize="16sp"/>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
