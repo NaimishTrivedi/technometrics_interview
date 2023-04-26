@@ -12,6 +12,7 @@ import com.om.moviedemo.api.APIClient
 import com.om.moviedemo.api.APIConstant
 import com.om.moviedemo.api.responsemodel.MovieItemModel
 import com.om.moviedemo.api.responsemodel.ResponseMoviesModel
+import com.om.moviedemo.database.cartdatabase.CartDatabase
 import com.om.moviedemo.databinding.ActivityMainBinding
 import com.om.moviedemo.interfaces.OnItemClickListener
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var moviesItems:ArrayList<MovieItemModel> = ArrayList()
     private var moviesAdapter: MoviesAdapter? = null
-
+    private val cartDatabase by lazy { CartDatabase(this).getCartDao() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         binding.mRVMovieList.adapter = moviesAdapter
 
         getMoviesData()
+
+        observeCart()
     }
 
     fun getMoviesData(){
@@ -77,4 +80,16 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    fun observeCart(){
+        lifecycleScope.launch {
+            cartDatabase.getCartList().collect{
+                if(it.isNotEmpty()){
+                    binding.mTxtCartItemCount.visibility = View.VISIBLE
+                    binding.mTxtCartItemCount.setText(it.size.toString())
+                }else{
+                    binding.mTxtCartItemCount.visibility = View.GONE
+                }
+            }
+        }
+    }
 }

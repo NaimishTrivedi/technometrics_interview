@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.om.moviedemo.database.entity.CartModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CartDao {
@@ -12,4 +13,7 @@ interface CartDao {
 
     @Query("SELECT EXISTS(SELECT * FROM tblcartdata WHERE movieId = :movieId)")
     suspend fun isAlreadyInCart(movieId : String) : Boolean
+
+    @Query("SELECT * FROM tblcartdata")
+    fun getCartList() : Flow<List<CartModel>>
 }
