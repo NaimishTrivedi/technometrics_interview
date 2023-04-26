@@ -16,9 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ActivityMovieDetail"
+            android:name=".ui.ActivityCart"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.ActivityMovieDetail"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ActivitySplash"
             android:exported="true"

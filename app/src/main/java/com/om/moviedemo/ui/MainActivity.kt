@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.mIvCartButton.setOnClickListener {
-
+            startActivity(Intent(this,ActivityCart::class.java))
         }
 
         binding.mRVMovieList.layoutManager = GridLayoutManager(this,2)

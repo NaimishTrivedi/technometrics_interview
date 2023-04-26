@@ -13,4 +13,7 @@
     <string name="lblavailable">Available</string>
     <string name="lbltotalprice">Total Price</string>
     <string name="lbladdtocart">Add to cart</string>
+    <string name="lblcart">Cart</string>
+    <string name="lblprocessing">Processing</string>
+    <string name="lbltotalprice_colon">Total Price : </string>
 </resources>
