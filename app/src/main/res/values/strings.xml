@@ -6,4 +6,11 @@
     <string name="lblnowplaying">Now Playing</string>
     <string name="lblbooktickets">Book tickets</string>
     <string name="strDot">&#8226;</string>
+    <string name="lblhowmanyseats">How many seats?</string>
+    <string name="lblgoldtype">GOLD</string>
+    <string name="lblseatprice">\u20B9 100.00</string>
+    <string name="lblrupeesymbol">\u20B9</string>
+    <string name="lblavailable">Available</string>
+    <string name="lbltotalprice">Total Price</string>
+    <string name="lbladdtocart">Add to cart</string>
 </resources>

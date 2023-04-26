@@ -10,9 +10,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.om.moviedemo.R
+import com.om.moviedemo.adapter.SeatSelectionAdapter
 import com.om.moviedemo.api.APIClient
 import com.om.moviedemo.api.APIConstant
 import com.om.moviedemo.api.responsemodel.ResponseMovieDetailModel
@@ -41,6 +45,13 @@ class ActivityMovieDetail : AppCompatActivity() {
         movieId = intent.getStringExtra(MOVIE_ID)
         binding.mTxtToolbarTitle.text = intent.getStringExtra(MOVIE_TITLE)
 
+        binding.mIvBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding.mBtnBookTicktes.setOnClickListener {
+            showSeatSelectionDialog()
+        }
         getMovieDetails()
     }
 
@@ -112,4 +123,25 @@ class ActivityMovieDetail : AppCompatActivity() {
         }
     }
 
+    fun showSeatSelectionDialog(){
+        val dialog = BottomSheetDialog(this,R.style.AppBottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.dialog_seat_selection, null)
+        dialog.setContentView(view)
+
+        var mTxtTotalPrice = view.findViewById<TextView>(R.id.mTxtTotalPrice)
+        mTxtTotalPrice.setText(getString(R.string.lblrupeesymbol)+" 100.00") // default first selection
+
+        var mRvSeatSelectionList = view.findViewById<RecyclerView>(R.id.mRvSeatSelectionList)
+        mRvSeatSelectionList.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        var seatSelectionAdapter = SeatSelectionAdapter()
+        seatSelectionAdapter.setOnSeatSelectionListener(object : SeatSelectionAdapter.OnSeatSelectionListener{
+            override fun onSeatSelection(count: Int) {
+                mTxtTotalPrice.setText(getString(R.string.lblrupeesymbol)+" "+(count * 100.00))
+            }
+
+        })
+        mRvSeatSelectionList.adapter = seatSelectionAdapter
+
+        dialog.show()
+    }
 }
